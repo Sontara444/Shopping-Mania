@@ -27,7 +27,7 @@ const AddProduct = () => {
         let product = productDetails;
 
         let formData = new FormData();
-        formData.append('product', image)
+        formData.append('product',image)
 
         await fetch('http://localhost:4000/upload',{
             method:'POST',
@@ -35,7 +35,7 @@ const AddProduct = () => {
                 Accept:'application/json',
             },
             body:formData,
-        }).then((resp) => resp.json()).then((data)=>{responseData = data})
+        }).then((resp) => resp.json()).then((data)=>{responseData = data}).catch((err)=> console.log(err))
 
         if(responseData.success) {
             product.image = responseData.image_url;
@@ -82,7 +82,7 @@ const AddProduct = () => {
         </div>
         <div className="addproduct-itemfield">
             <label htmlFor="file-input">
-                <img src={image?URL.createObjectURL(image):upload_area} alt="img" className='addproduct-thumnail-img'/>
+                <img src={image?URL.createObjectURL(image):upload_area} alt="" className='addproduct-thumnail-img'/>
             </label>
             <input onChange={imageHandler} type="file" name='image' id='file-input' hidden />
         </div>

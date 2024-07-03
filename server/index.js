@@ -7,6 +7,7 @@ const multer = require("multer");
 const path = require("path");
 const cors = require("cors");
 const { type } = require("os");
+const { register } = require("module");
 
 // modules
 app.use(express.json());
@@ -28,7 +29,7 @@ app.get("/", (req, res)=>{
 const storage = multer.diskStorage({
     destination: './upload/images',
     filename: (req,file,cb)=>{
-        return cb(null,`${file.fieldname}_${Date.now()}_${path.extname(file.originalname)}`)
+        return cb(null,`${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`)
     }
 })
 const upload = multer({storage:storage})
@@ -36,9 +37,9 @@ const upload = multer({storage:storage})
 //  Creating Upload Endpoint for images
 
 app.use('./images', express.static('upload/images'))
-app.post("/upload", upload.single('product'), (req, res)=>{
+app.post("/upload", upload.single('product'),(req, res)=>{
     res.json({
-        success: 1,
+        success:1,
         image_url:`http://localhost:${port}/images/${req.file.filename}`
     })
 })
@@ -130,6 +131,35 @@ app.get('/allproducts', async (req, res)=>{
     res.send(products);
 })
 
+
+// Schema creating for User model
+
+const Users = mongoose.model('Users', {
+    name:{
+        type:String,
+    },
+    email:{
+        type:String,
+        unique:true,
+    },
+    password:{
+        type:String,
+    },
+    cartData:{
+        type:Object,
+    },
+    date:{
+        type:Date,
+        default:Date.now,
+    },
+})
+
+// Creating Endpoint for registering the user
+
+app.post('./signup', async(req, res)=>{
+
+})
+    
 app.listen(port, (error)=>{
     if(!error){
         console.log("Server Running on port " +port)
