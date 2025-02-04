@@ -92,7 +92,7 @@ const ShopContextProvider = (props) =>{
                console.warn(`Product with ID ${item} not found in all_product.`);
            }
 
-            // totalAmount += itemInfo.new_price * cartItems[item];
+            totalAmount += itemInfo.new_price * cartItems[item];
          }
       }
       return totalAmount;
